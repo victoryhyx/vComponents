@@ -6,7 +6,9 @@
     <hu-button type="danger">默认按钮</hu-button>
     <hu-button type="success">默认按钮</hu-button>
     <hu-button type="info">默认按钮</hu-button>
-    <hu-icon></hu-icon>
+    <hu-button type="info"
+               icon="sousuo">带icon按钮</hu-button>
+    <hu-icon icon="sousuo"></hu-icon>
   </div>
 </template>
 

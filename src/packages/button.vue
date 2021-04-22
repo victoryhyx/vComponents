@@ -1,7 +1,11 @@
 <template>
   <div>
     <!-- slot -->
-    <button class="hu-button" :class="btnClass">
+    <button class="hu-button"
+            :class="btnClass">
+      <hu-icon :icon="icon"
+               class="icon"
+               v-if="icon"></hu-icon>
       <span v-if="this.$slots.default">
         <slot></slot>
       </span>
@@ -10,13 +14,14 @@
 </template>
 
 <script>
+import huIcon from './icon'
 export default {
   name: "hu-button",
   props: {
     type: {
       type: String,
       default: "",
-      validator(type) {
+      validator (type) {
         console.log(type);
         if (
           type &&
@@ -24,15 +29,21 @@ export default {
         ) {
           console.error(
             "类型为" +
-              ["primary", "warning", "danger", "success", "info"].join(",")
+            ["primary", "warning", "danger", "success", "info"].join(",")
           );
         }
         return true;
-      },
+      }
     },
+    icon: {
+      type: String
+    }
+  },
+  component: {
+    huIcon
   },
   computed: {
-    btnClass() {
+    btnClass () {
       let classes = [];
       if (this.type) {
         classes.push(`hu-button-${this.type}`);
@@ -74,21 +85,50 @@ $actived-color: #3a8ee6;
     border-color: $border-color;
     outline: none;
   }
-  @each $type,
-    $color
-      in (
-        primary: $primary,
-        success: $success,
-        info: $info,
-        warning: $warning,
-        danger: $danger
-      )
+  @each $type, $color in ( primary: $primary,  success: $success,info: $info,warning: $warning,danger: $danger )
   {
     &-#{$type} {
       background: #{$color};
       border: 1px solid #{$color};
       color: #fff;
+      fill: #fff;
     }
+  }
+  @each $type,
+    $color
+      in (
+        primary: $primary-hover,
+        success: $success-hover,
+        info: $info-hover,
+        warning: $warning-hover,
+        danger: $danger-hover
+      )
+  {
+    &-#{$type}:hover {
+      background: $color;
+      border: 1px solid $color;
+      color: #fff;
+    }
+  }
+  @each $type,
+    $color
+      in (
+        primary: $primary-active,
+        success: $success-active,
+        info: $info-active,
+        warning: $warning-active,
+        danger: $danger-active
+      )
+  {
+    &-#{$type}:active {
+      background: $color;
+      border: 1px solid $color;
+      color: #fff;
+    }
+  }
+  .icon {
+    width: 16px;
+    height: 16px;
   }
 }
 </style>
