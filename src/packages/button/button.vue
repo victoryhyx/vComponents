@@ -1,11 +1,8 @@
 <template>
   <div>
     <!-- slot -->
-    <button class="hu-button"
-            :class="btnClass">
-      <hu-icon :icon="icon"
-               class="icon"
-               v-if="icon"></hu-icon>
+    <button class="hu-button" :class="btnClass">
+      <hu-icon :icon="icon" class="icon" v-if="icon"></hu-icon>
       <span v-if="this.$slots.default">
         <slot></slot>
       </span>
@@ -14,14 +11,14 @@
 </template>
 
 <script>
-import huIcon from './icon'
+import huIcon from "../icon";
 export default {
   name: "hu-button",
   props: {
     type: {
       type: String,
       default: "",
-      validator (type) {
+      validator(type) {
         console.log(type);
         if (
           type &&
@@ -29,24 +26,37 @@ export default {
         ) {
           console.error(
             "类型为" +
-            ["primary", "warning", "danger", "success", "info"].join(",")
+              ["primary", "warning", "danger", "success", "info"].join(",")
           );
         }
         return true;
-      }
+      },
     },
     icon: {
-      type: String
-    }
+      type: String,
+    },
+    iconPosition: {
+      type: String,
+      default: "left",
+      validator(type) {
+        if (!["left", "right"].includes(type)) {
+          console.error("not in left,right");
+        }
+        return true;
+      },
+    },
   },
   component: {
-    huIcon
+    huIcon,
   },
   computed: {
-    btnClass () {
+    btnClass() {
       let classes = [];
       if (this.type) {
         classes.push(`hu-button-${this.type}`);
+      }
+      if (this.iconPosition) {
+        classes.push(`hu-button-${this.iconPosition}`);
       }
       return classes;
     },
@@ -55,7 +65,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../styles/_var.scss";
+@import "@/styles/_var.scss";
 
 /* @each */
 $height: 42px;
@@ -85,7 +95,15 @@ $actived-color: #3a8ee6;
     border-color: $border-color;
     outline: none;
   }
-  @each $type, $color in ( primary: $primary,  success: $success,info: $info,warning: $warning,danger: $danger )
+  @each $type,
+    $color
+      in (
+        primary: $primary,
+        success: $success,
+        info: $info,
+        warning: $warning,
+        danger: $danger
+      )
   {
     &-#{$type} {
       background: #{$color};
@@ -103,23 +121,6 @@ $actived-color: #3a8ee6;
         warning: $warning-hover,
         danger: $danger-hover
       )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
   {
     &-#{$type}:hover {
       background: $color;
@@ -146,6 +147,27 @@ $actived-color: #3a8ee6;
   .icon {
     width: 16px;
     height: 16px;
+  }
+  .icon + span {
+    margin-left: 4px;
+  }
+  &-left {
+    svg {
+      order: 1;
+    }
+    span {
+      order: 2;
+    }
+  }
+  &-right {
+    svg {
+      order: 2;
+    }
+    span {
+      order: 1;
+      margin-left: 0;
+      margin-right: 4px;
+    }
   }
 }
 </style>
